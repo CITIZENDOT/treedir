@@ -40,7 +40,7 @@ def cli(directory_list, sym_links, only_dirs, all_files):
         directory_list = ["."]
 
     for directory in directory_list:
-        _dirs, _files = main(current_dir=directory)
+        _dirs, _files = main(start_path=directory)
         total_dirs += _dirs
         total_files += _files
 
