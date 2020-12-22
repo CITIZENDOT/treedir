@@ -3,7 +3,7 @@ import ntpath
 from colorama import Fore, Style
 
 START_SUFFIX = "├── "
-FILE_END_SUFFIX = "└──"
+END_SUFFIX = "└── "
 LINE = "│"
 
 
@@ -14,20 +14,51 @@ def clean_name(path):
 
 def main(total_dirs=0, total_files=0, start_path="."):
     for root, dirs, files in os.walk(start_path):
-        level = os.path.relpath(root, start_path).count(os.sep) + 1
-        indent = sub_indent = ""
-        if level > 0:
-            if level == 1:
-                indent = START_SUFFIX
-            else:
-                indent = (LINE + ("    " * (level - 1))) + START_SUFFIX
-
-        sub_indent = (LINE + ("    " * level)) + START_SUFFIX
-        print("{}{}".format(indent, Fore.BLUE + Style.BRIGHT + clean_name(root) + Style.RESET_ALL))
+        relativePath = os.path.relpath(root, start_path)
+        dirLevel = relativePath.count(os.sep)
+        fileLevel = dirLevel + 1
+        isStartPath = os.path.abspath(root) == os.path.abspath(start_path)
         total_dirs += 1
-        for f in files:
-            print("{}{}".format(sub_indent, clean_name(f)))
-            total_files += 1
+        total_files += len(files)
+
+        if isStartPath:
+            dirIndent = ""
+            fileIndent = START_SUFFIX
+        else:
+            dirIndent = (
+                (LINE * (dirLevel != 0)) + (dirLevel * "   ") + START_SUFFIX
+            )
+            fileIndent = LINE + (fileLevel * "   ") + START_SUFFIX
+
+        print(
+            "{}{}".format(
+                dirIndent,
+                Fore.BLUE
+                + Style.BRIGHT
+                + clean_name(root)
+                + " "
+                + str(dirLevel)
+                + Style.RESET_ALL,
+            )
+        )
+
+        for f in files[:-1]:
+            print(
+                "{}{}".format(
+                    fileIndent,
+                    clean_name(f) + Style.RESET_ALL,
+                )
+            )
+        if files:
+            if not dirs:
+                fileIndent = fileIndent.replace(START_SUFFIX, END_SUFFIX)
+            print(
+                "{}{}".format(
+                    fileIndent,
+                    clean_name(files[-1]) + Style.RESET_ALL,
+                )
+            )
+
     return (total_dirs - 1, total_files)
 
 

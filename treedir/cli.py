@@ -12,12 +12,20 @@ def add_options(options):
     return _add_options
 
 
-options = [
+listing_options = [
     click.option(
-        "-a", "all_files", help="All files are listed.", is_flag=True, default=False
+        "-a",
+        "all_files",
+        help="All files are listed.",
+        is_flag=True,
+        default=False,
     ),
     click.option(
-        "-d", "only_dirs", help="List directory only.", is_flag=True, default=False
+        "-d",
+        "only_dirs",
+        help="List directory only.",
+        is_flag=True,
+        default=False,
     ),
     click.option(
         "-l",
@@ -26,12 +34,12 @@ options = [
         is_flag=True,
         default=False,
     ),
-    click.argument("directory_list", type=click.Path(exists=True), nargs=-1),
 ]
 
 
 @click.command()
-@add_options(options)
+@add_options(listing_options)
+@click.argument("directory_list", type=click.Path(exists=True), nargs=-1)
 def cli(directory_list, sym_links, only_dirs, all_files):
     total_dirs = 0
     total_files = 0
