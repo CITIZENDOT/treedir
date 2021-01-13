@@ -1,4 +1,8 @@
-# tree
+# treedir
+
+![default-monochrome-black](https://user-images.githubusercontent.com/52322531/104421220-faf62480-5572-11eb-8c04-3d591884e248.png)
+-----
+
 
 ## Necessity
 Oneday, I logged into a ssh session. I wanted to list a directory. But, `tree` utility isn't installed in that system. And the thing is, I am not super-user and Hence, I can't install other `apt` packages in that system. I found some `tree` scripts in github but they aren't fully functional. All they have is basic directory listing. I want to filter out some files/folders based on the Pattern, follow sym-links etc...
